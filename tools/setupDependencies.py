@@ -49,6 +49,8 @@ def main():
     print("Downloading decompiler")
     urllib.request.urlretrieve(decompiler_url, decompiler_destination)
 
+    print("Complete")
+
 
 def extract(path_to_zip):
     """ Extract a zip """
