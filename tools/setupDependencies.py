@@ -3,6 +3,7 @@
 # Setup Dependencies - PYTHON 3
 # Downloads dependencies and gets them ready for stuff
 import shutil
+import stat
 
 __author__ = "Kocsen Chung"
 
@@ -41,6 +42,7 @@ def main():
     os.rename(lib_dir + "/" + zip_name, lib_dir + "/dex2jar")
     # Remove the zip
     os.remove(dex2jar_zip_destination)
+    make_dir_executable(lib_dir + "/dex2jar")
 
 
     # ############
@@ -50,8 +52,8 @@ def main():
     urllib.request.urlretrieve(apktools_url, apktools_destination)
 
     # ############
-    ## apktools
-    #############
+    # # apktools
+    # ############
     print("Downloading decompiler")
     urllib.request.urlretrieve(decompiler_url, decompiler_destination)
 
@@ -75,6 +77,15 @@ def create_lib_dir():
         shutil.rmtree(lib_dir)
     print("Creating new lib directory")
     os.makedirs(lib_dir)
+
+
+def make_dir_executable(directory):
+    for file in os.listdir(directory):
+        if ".sh" in file:
+            full_path = "/".join([directory, file])
+            print(full_path)
+            st = os.stat(full_path)
+            os.chmod(full_path, st.st_mode | stat.S_IEXEC)
 
 
 if __name__ == "__main__":
