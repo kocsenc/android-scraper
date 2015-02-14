@@ -5,3 +5,10 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+
+# APK files
+*.apk
+*.zip
+*.iml
+*.uncompressed
+
