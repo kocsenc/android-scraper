@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
+__author__ = "Kocsen Chung"
 # Setup Dependencies - PYTHON 3
-# Downloads dependencies and gets them ready for stuff
+# Downloads dependencies and gets them ready for the
+# apk_decompiler.sh script
+
 import shutil
 import stat
-
-__author__ = "Kocsen Chung"
 
 import os
 import sys
@@ -29,6 +30,13 @@ decompiler_destination = lib_dir + "/procyon-decompiler.jar"
 
 
 def main():
+    """
+    Main run.
+    - Downloads, unzips and makes dex2jar executable
+    - Downloads and renames apk-tools
+    - Downloads and renames Procyon decompiler
+    :return:
+    """
     create_lib_dir()
 
     # ############
@@ -52,7 +60,7 @@ def main():
     urllib.request.urlretrieve(apktools_url, apktools_destination)
 
     # ############
-    # # apktools
+    # # Procyon decompiler
     # ############
     print("Downloading decompiler")
     urllib.request.urlretrieve(decompiler_url, decompiler_destination)
@@ -80,10 +88,14 @@ def create_lib_dir():
 
 
 def make_dir_executable(directory):
+    """
+    Makes .sh files in directory variable executable
+    :param directory:
+    :return: N/A
+    """
     for file in os.listdir(directory):
         if ".sh" in file:
             full_path = "/".join([directory, file])
-            print(full_path)
             st = os.stat(full_path)
             os.chmod(full_path, st.st_mode | stat.S_IEXEC)
 
