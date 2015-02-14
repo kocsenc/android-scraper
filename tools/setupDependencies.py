@@ -39,7 +39,7 @@ def main():
 
     # ############
     # # apktools
-    #############
+    # ############
     print("Downloading apktools")
     urllib.request.urlretrieve(apktools_url, apktools_destination)
 
