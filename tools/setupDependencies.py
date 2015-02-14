@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Setup Dependencies - PYTHON 3
 # Downloads dependencies and gets them ready for stuff
 import shutil
