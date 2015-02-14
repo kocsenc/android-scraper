@@ -7,6 +7,10 @@ import shutil
 __author__ = "Kocsen Chung"
 
 import os
+import sys
+
+if sys.version < '3':
+    sys.exit("Please use Python3.")
 import zipfile
 import urllib.request
 
@@ -45,7 +49,7 @@ def main():
     print("Downloading apktools")
     urllib.request.urlretrieve(apktools_url, apktools_destination)
 
-    #############
+    # ############
     ## apktools
     #############
     print("Downloading decompiler")
