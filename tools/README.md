@@ -13,10 +13,9 @@ This will get the appropriate libraries under the `lib/` directory.
 
 ```
 ./apk_decompiler.sh path/to/app.apk
+```
 
-```
 The result will be found in the script location under a `app.apk.uncompressed` directory.
-```
 
 ## Implementation details
 ### Dependencies
