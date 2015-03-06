@@ -13,6 +13,6 @@ class AndroidApp():
     def __init__(self, name, location_root):
         self.name = name
         self.location = location_root
-        self.manifestET = ET.parse(location_root + '/app/AndroidManifest.xml')
+        self.manifest_ET_root = ET.parse(location_root + '/app/AndroidManifest.xml').getroot()
 
 

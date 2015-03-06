@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from AndroidApp import AndroidApp
+from Commands.InternetUseCommand import InternetUseCommand
 
 
 __author__ = 'kocsen'
@@ -26,6 +27,16 @@ def main():
     logging.info(abspath(path))
 
     current_app = AndroidApp(app_name, abspath(path))
+    internet_use = InternetUseCommand(current_app).execute()
+
+    if internet_use:
+        # Check for account manager
+        # Check for SSL
+        pass
+
+        # Check for sharing
+
+        # Check for internationalization
 
 
 def setup_logging():
