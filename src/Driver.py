@@ -3,6 +3,7 @@ from AndroidApp import AndroidApp
 from Commands.AccountManagerUseCommand import AccountManagerUseCommand
 from Commands.InternetUseCommand import InternetUseCommand
 from Commands.SSLUseCommand import SSLUseCommand
+from Commands.SharingCenterUseCommand import SharingCenterUseCommand
 
 
 __author__ = 'kocsen'
@@ -37,9 +38,10 @@ def main():
         # Check for SSL
         uses_ssl = SSLUseCommand(current_app).execute()
 
-        # Check for sharing
+    # Check for sharing
+    uses_sharing = SharingCenterUseCommand(current_app).execute()
 
-        # Check for internationalization
+    # Check for internationalization
 
 
 def setup_logging():
