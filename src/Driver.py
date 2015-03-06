@@ -2,6 +2,7 @@
 from AndroidApp import AndroidApp
 from Commands.AccountManagerUseCommand import AccountManagerUseCommand
 from Commands.InternetUseCommand import InternetUseCommand
+from Commands.SSLUseCommand import SSLUseCommand
 
 
 __author__ = 'kocsen'
@@ -32,9 +33,9 @@ def main():
 
     if internet_use:
         # Check for account manager
-        AccountManagerUseCommand(current_app).execute()
+        uses_acc_manager = AccountManagerUseCommand(current_app).execute()
         # Check for SSL
-        pass
+        uses_ssl = SSLUseCommand(current_app).execute()
 
         # Check for sharing
 
