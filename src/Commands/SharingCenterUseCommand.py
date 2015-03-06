@@ -25,7 +25,7 @@ class SharingCenterUseCommand(Command):
             with open(file_name, 'r') as f:
                 try:
                     for line in f.readlines():
-                        if "Intent.ACTION_SEND" in line:
+                        if "ACTION_SEND" in line:
                             sharing_files.append(file_name)
                             confidence_points += 1
                             logging.info("found %d instance of Sharing in %s", confidence_points,
