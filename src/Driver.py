@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from AndroidApp import AndroidApp
+from Commands.AccountManagerUseCommand import AccountManagerUseCommand
 from Commands.InternetUseCommand import InternetUseCommand
 
 
@@ -31,6 +32,7 @@ def main():
 
     if internet_use:
         # Check for account manager
+        AccountManagerUseCommand(current_app).execute()
         # Check for SSL
         pass
 
@@ -40,7 +42,7 @@ def main():
 
 
 def setup_logging():
-    logging.basicConfig(level=logging.DEBUG);
+    logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)2s ', level=logging.DEBUG);
     # logging.basicConfig(filename='android-scraper.log', level=logging.DEBUG)
     pass
 
