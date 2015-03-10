@@ -26,13 +26,16 @@ class AndroidApp():
             for filename in files:
                 self.source_paths.append(os.path.join(root, filename))
 
-        # getting the source RES files
+        # getting the source RES files and International files
         self.res_source_location = os.path.join(location_root, "app/res")
         self.res_paths = []
+        self.lang_dirs = []
         for root, subFolders, files in os.walk(self.res_source_location):
             for filename in fnmatch.filter(files, '*.xml'):  # Matching XML
                 self.res_paths.append(os.path.join(root, filename))
 
-
+            if "values-" in subFolders and len(subFolders) == 9:
+                # Attempts to match
+                self.lang_dirs.append(subFolders)
 
 

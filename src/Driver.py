@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from AndroidApp import AndroidApp
+from Commands.InternationalizationCommand import InternationalizationCommand
 from Commands.AccountManagerUseCommand import AccountManagerUseCommand
 from Commands.InternetUseCommand import InternetUseCommand
 from Commands.SSLUseCommand import SSLUseCommand
@@ -42,6 +43,7 @@ def main():
     uses_sharing = SharingCenterUseCommand(current_app).execute()
 
     # Check for internationalization
+    tries_internationalization = InternationalizationCommand(current_app).execute()
 
 
 def setup_logging():
