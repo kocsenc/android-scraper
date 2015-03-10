@@ -20,12 +20,14 @@ class InternationalizationCommand(Command):
         logging.info("Running Internationalization Command")
 
         num_languages = 0
+        language_areas = []
 
         for folder_name in self.app.lang_dirs:
-            logging.debug(folder_name)
             split = folder_name.split("-")
             if len(split) > 1 and split[1] in self.languages:
+                logging.debug('Found language internationalization: ' + split[1])
                 num_languages += 1
+                language_areas.append(self.languages[split[1]])
 
         if num_languages > 3:
             return True

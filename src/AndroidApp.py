@@ -34,8 +34,11 @@ class AndroidApp():
             for filename in fnmatch.filter(files, '*.xml'):  # Matching XML
                 self.res_paths.append(os.path.join(root, filename))
 
-            if "values-" in subFolders and len(subFolders) == 9:
-                # Attempts to match
-                self.lang_dirs.append(subFolders)
+            # For matching internationalization
+            if len(subFolders) > 0:
+                for folder in subFolders:
+                    if "values-" in folder and len(folder) == 9:
+                        # Attempts to match
+                        self.lang_dirs.append(folder)
 
 
