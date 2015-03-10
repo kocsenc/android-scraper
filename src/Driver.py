@@ -33,17 +33,30 @@ def main():
     current_app = AndroidApp(app_name, abspath(path))
     internet_use = InternetUseCommand(current_app).execute()
 
+    features = {
+        'Internet': False,
+        'Account Manager': False,
+        'Use SSL': False,
+
+        'Sharing (Sending)': False,
+        'Internationalization': False
+    }
+
     if internet_use:
+        features['Internet'] = True
         # Check for account manager
-        uses_acc_manager = AccountManagerUseCommand(current_app).execute()
+        features['Account Manager'] = AccountManagerUseCommand(current_app).execute()
         # Check for SSL
-        uses_ssl = SSLUseCommand(current_app).execute()
+        features['Use SSL'] = SSLUseCommand(current_app).execute()
 
     # Check for sharing
-    uses_sharing = SharingCenterUseCommand(current_app).execute()
+    features['Sharing (Sending)'] = SharingCenterUseCommand(current_app).execute()
 
     # Check for internationalization
-    tries_internationalization = InternationalizationCommand(current_app).execute()
+    features['Internationalization'] = InternationalizationCommand(current_app).execute()
+
+    logging.info("==== FINAL RESULTS ===")
+    logging.info(features)
 
 
 def setup_logging():
