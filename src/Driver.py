@@ -25,6 +25,16 @@ def main():
 
     # Carry on with app preconditions
     path = arguments[1]
+    analyze_app(path)
+
+
+def analyze_app(path):
+    """
+    Actually analyzes the app, goes through the commands and saves results.
+
+    :param path:
+    :return:
+    """
     app_name = basename(path).split(".")[0]
     logging.info("Starting Android Scraper")
     logging.info("App name: %s", app_name)
