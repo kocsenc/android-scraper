@@ -16,6 +16,10 @@ from DBConnect import write_app_data
 
 
 def main():
+    """
+    Setup the logging, gather the path of the UNCOMPRESSED APK
+    Run static analysis tool.
+    """
     setup_logging()
 
     arguments = sys.argv
@@ -76,9 +80,11 @@ def analyze_app(path):
 
 
 def setup_logging():
+    """
+    Logging setup
+    """
     logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)2s ', level=logging.DEBUG);
     # logging.basicConfig(filename='android-scraper.log', level=logging.DEBUG)
-    pass
 
 
 if __name__ == "__main__":
