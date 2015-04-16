@@ -12,6 +12,7 @@ __author__ = 'kocsen'
 import sys
 import logging
 from os.path import *
+from DBConnect import write_app_data
 
 
 def main():
@@ -70,6 +71,8 @@ def analyze_app(path):
 
     # Now add the features to the app object.
     current_app.features = features
+
+    write_app_data(current_app)
 
 
 def setup_logging():
