@@ -35,7 +35,7 @@ def analyze_app(path):
     :param path:
     :return:
     """
-    app_name = basename(path).split(".")[0]
+    app_name = basename(path).split(".uncompressed")[0]
     logging.info("Starting Android Scraper")
     logging.info("App name: %s", app_name)
     logging.info(abspath(path))
