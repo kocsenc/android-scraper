@@ -10,7 +10,6 @@ __author__ = 'kocsen'
 class InternationalizationCommand(Command):
     """
     Command that will check if app is attempting to do internationalization
-
     """
 
     def __init__(self, app):
