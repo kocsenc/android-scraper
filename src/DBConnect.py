@@ -17,8 +17,8 @@ in the existing Database AppDataDB and the naming conventions of the apk's.
 
 def write_app_data(app):
     config = {
-        'user': '',
-        'password': '',
+        'user': 'AppDataDBUser',
+        'password': '7Rk5qx5k5AT7B0bNQD843pWNuADkKt4jQSnyAI8DNpjjgLlUamlGAgtMrzzK0Xu',
         'host': '127.0.0.1',
         'database': 'AppFeatures',
     }
@@ -58,29 +58,30 @@ def write(app, cnx):
             exit()
 
         foreign_key_id = get_version_id(split[0], split[1], split[2])
+        logging.debug("Foreign key id: ", str(foreign_key_id))
 
-        add_feature_query = ("INSERT INTO version_features "
-                             "(app_version_id, internet, account_manager, uses_ssl, sharing_sending, translation) "
-                             "VALUES (%s, %s, %s, %s, %s, %s)")
-
-        feature_data = (
-            foreign_key_id,
-            results['Internet'],
-            results['Account Manager'],
-            results['Use SSL'],
-            results['Sharing-Sending'],
-            results['Internationalization']
-        )
-
-        cursor.execute(add_feature_query, feature_data)
-
-        # commit & actually save
-        cnx.commit()
+        # add_feature_query = ("INSERT INTO version_features "
+        # "(app_version_id, internet, account_manager, uses_ssl, sharing_sending, translation) "
+        # "VALUES (%s, %s, %s, %s, %s, %s)")
+        #
+        # feature_data = (
+        # foreign_key_id,
+        # results['Internet'],
+        # results['Account Manager'],
+        # results['Use SSL'],
+        # results['Sharing-Sending'],
+        # results['Internationalization']
+        # )
+        #
+        # cursor.execute(add_feature_query, feature_data)
+        #
+        # # commit & actually save
+        # cnx.commit()
     finally:
         cursor.close()
 
 
-def get_version_id(app_package, version_code, raw_date):
+def get_version_id(app_package, version_code, raw_date, cnx):
     """
     Gets the id of the app found inside of the `version_details` table
     in the Database. Used for adding a foreign key to the features table
@@ -89,11 +90,33 @@ def get_version_id(app_package, version_code, raw_date):
     :param raw_date:     The date as appears on apk name in the format YYYY_MM_DD
     :return: id - as integer
     """
-    parsed_date = time.strftime("%b %d, %Y", time.strptime(raw_date, "%Y_%m_%d"))
-    id = 0
-    # Select id from version_details
-    # WHERE
-    # docid = app package,
-    # details_appDetails_versionCode = version_code
-    # details_appDetails_uploadDate = parsed_date // Maybe use %LIKE%
-    return id
+    cursor = cnx.cursor
+    uid = None
+    try:
+        logging.debug("App package ", app_package)
+        logging.debug("version code ", version_code)
+        logging.debug("raw date ", raw_date)
+
+        parsed_date = time.strftime("%b %d, %Y", time.strptime(raw_date, "%Y_%m_%d"))
+
+        # Select id from version_details
+        # WHERE
+        # docid = app package,
+        # details_appDetails_versionCode = version_code
+        # details_appDetails_uploadDate = parsed_date // Maybe use %LIKE%
+        query = ("SELECT id FROM version_details WHERE "
+                 "docid = %s AND "
+                 "details_appDetails_versionCode = %s AND "
+                 "details_appDetails_uploadDate = %s")
+
+        cursor.execute(query, (app_package, version_code, parsed_date))
+        row = cursor.fetchone()
+        uid = row[0]
+        logging.debug("GOT ROW: ", str(uid))
+
+    finally:
+        cursor.close()
+        return uid
+
+
+
