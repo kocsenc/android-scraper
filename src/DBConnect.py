@@ -48,14 +48,36 @@ def write(app, cnx):
     :param cnx: SQL Connection
     :return:
     """
-    results = app.features
+    cursor = cnx.cursor()
+    try:
+        results = app.features
+        table_name = 'features'
 
-    split = app.name.split("-")
-    if len(split) != 3:
-        exit()
+        split = app.name.split("-")
+        if len(split) != 3:
+            exit()
 
-    foreign_key_id = get_version_id(split[0], split[1], split[2])
-    table_name = 'features'
+        foreign_key_id = get_version_id(split[0], split[1], split[2])
+
+        add_feature_query = ("INSERT INTO version_features "
+                             "(app_version_id, internet, account_manager, uses_ssl, sharing_sending, translation) "
+                             "VALUES (%s, %s, %s, %s, %s, %s)")
+
+        feature_data = (
+            foreign_key_id,
+            results['Internet'],
+            results['Account Manager'],
+            results['Use SSL'],
+            results['Sharing-Sending'],
+            results['Internationalization']
+        )
+
+        cursor.execute(add_feature_query, feature_data)
+
+        # commit & actually save
+        cnx.commit()
+    finally:
+        cursor.close()
 
 
 def get_version_id(app_package, version_code, raw_date):

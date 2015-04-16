@@ -48,7 +48,7 @@ def analyze_app(path):
         'Account Manager': False,
         'Use SSL': False,
 
-        'Sharing (Sending)': False,
+        'Sharing-Sending': False,
         'Internationalization': False
     }
 
@@ -60,7 +60,7 @@ def analyze_app(path):
         features['Use SSL'] = SSLUseCommand(current_app).execute()
 
     # Check for sharing
-    features['Sharing (Sending)'] = SharingCenterUseCommand(current_app).execute()
+    features['Sharing-Sending'] = SharingCenterUseCommand(current_app).execute()
 
     # Check for internationalization
     features['Internationalization'] = InternationalizationCommand(current_app).execute()
