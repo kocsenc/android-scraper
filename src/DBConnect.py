@@ -37,7 +37,8 @@ def write_app_data(app):
     except Exception as e:
         logging.error(e.message)
     finally:
-        cnx.close()
+        if cnx is not None:
+            cnx.close()
 
 
 def write(app, cnx):
@@ -58,25 +59,24 @@ def write(app, cnx):
             exit()
 
         foreign_key_id = get_version_id(split[0], split[1], split[2])
-        logging.debug("Foreign key id: ", str(foreign_key_id))
 
-        # add_feature_query = ("INSERT INTO version_features "
-        # "(app_version_id, internet, account_manager, uses_ssl, sharing_sending, translation) "
-        # "VALUES (%s, %s, %s, %s, %s, %s)")
-        #
-        # feature_data = (
-        # foreign_key_id,
-        # results['Internet'],
-        # results['Account Manager'],
-        # results['Use SSL'],
-        # results['Sharing-Sending'],
-        # results['Internationalization']
-        # )
-        #
-        # cursor.execute(add_feature_query, feature_data)
-        #
-        # # commit & actually save
-        # cnx.commit()
+        add_feature_query = ("INSERT INTO version_features "
+                             "(app_version_id, internet, account_manager, uses_ssl, sharing_sending, translation) "
+                             "VALUES (%s, %s, %s, %s, %s, %s)")
+
+        feature_data = (
+            foreign_key_id,
+            results['Internet'],
+            results['Account Manager'],
+            results['Use SSL'],
+            results['Sharing-Sending'],
+            results['Internationalization']
+        )
+
+        cursor.execute(add_feature_query, feature_data)
+
+        # commit & actually save
+        cnx.commit()
     finally:
         cursor.close()
 
@@ -85,7 +85,7 @@ def get_version_id(app_package, version_code, raw_date, cnx):
     """
     Gets the id of the app found inside of the `version_details` table
     in the Database. Used for adding a foreign key to the features table
-    :param app_package:  The name, such as com.google.Gmail (without the apk)
+    :param app_package:  The name, such as com.google.gmail (without the .apk ending)
     :param version_code: The version code used in the DB
     :param raw_date:     The date as appears on apk name in the format YYYY_MM_DD
     :return: id - as integer
@@ -99,11 +99,10 @@ def get_version_id(app_package, version_code, raw_date, cnx):
 
         parsed_date = time.strftime("%b %d, %Y", time.strptime(raw_date, "%Y_%m_%d"))
 
-        # Select id from version_details
-        # WHERE
+        # Select id FROM version_details WHERE
         # docid = app package,
-        # details_appDetails_versionCode = version_code
-        # details_appDetails_uploadDate = parsed_date // Maybe use %LIKE%
+        #   details_appDetails_versionCode = version_code
+        #   details_appDetails_uploadDate = parsed_date // Maybe use %LIKE%
         query = ("SELECT id FROM version_details WHERE "
                  "docid = %s AND "
                  "details_appDetails_versionCode = %s AND "
@@ -112,7 +111,7 @@ def get_version_id(app_package, version_code, raw_date, cnx):
         cursor.execute(query, (app_package, version_code, parsed_date))
         row = cursor.fetchone()
         uid = row[0]
-        logging.debug("GOT ROW: ", str(uid))
+        logging.debug("GOT ID!: ", str(uid))
 
     finally:
         cursor.close()
