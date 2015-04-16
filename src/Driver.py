@@ -35,7 +35,7 @@ def analyze_app(path):
     :param path:
     :return:
     """
-    app_name = basename(path).split(".uncompressed")[0]
+    app_name = basename(path).split(".apk.uncompressed")[0]
     logging.info("Starting Android Scraper")
     logging.info("App name: %s", app_name)
     logging.info(abspath(path))
@@ -67,6 +67,9 @@ def analyze_app(path):
 
     logging.info("==== FINAL RESULTS ===")
     logging.info(features)
+
+    # Now add the features to the app object.
+    current_app.features = features
 
 
 def setup_logging():

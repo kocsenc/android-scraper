@@ -7,7 +7,15 @@ import mysql.connector
 from mysql.connector import errorcode
 
 
-def write_app_data(data):
+"""
+Used to write app feature data to a DB.
+
+NOTE: This script is VERY specifically tied to the way data is modeled
+in the existing Database AppDataDB and the naming conventions of the apk's.
+"""
+
+
+def write_app_data(app):
     config = {
         'user': '',
         'password': '',
@@ -18,7 +26,7 @@ def write_app_data(data):
     cnx = None
     try:
         cnx = mysql.connector.connect(**config)
-        write(data)
+        write(app, cnx)
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             logging.error("Something is wrong with your user name or password")
@@ -32,29 +40,38 @@ def write_app_data(data):
         cnx.close()
 
 
-def write(data):
+def write(app, cnx):
     """
-
-    :param data:
+    Given an app and a SQL connection, write the app features
+    into the feature table.
+    :param app: The Android Application object with the data
+    :param cnx: SQL Connection
     :return:
     """
-    table_name = 'features'
+    results = app.features
 
-    add_feature = ()
+    split = app.name.split("-")
+    if len(split) != 3:
+        exit()
+
+    foreign_key_id = get_version_id(split[0], split[1], split[2])
+    table_name = 'features'
 
 
 def get_version_id(app_package, version_code, raw_date):
     """
-
-    :param app_package:
-    :param version_code:
-    :param raw_date:
-    :return:
+    Gets the id of the app found inside of the `version_details` table
+    in the Database. Used for adding a foreign key to the features table
+    :param app_package:  The name, such as com.google.Gmail (without the apk)
+    :param version_code: The version code used in the DB
+    :param raw_date:     The date as appears on apk name in the format YYYY_MM_DD
+    :return: id - as integer
     """
     parsed_date = time.strftime("%b %d, %Y", time.strptime(raw_date, "%Y_%m_%d"))
-
+    id = 0
     # Select id from version_details
     # WHERE
     # docid = app package,
     # details_appDetails_versionCode = version_code
     # details_appDetails_uploadDate = parsed_date // Maybe use %LIKE%
+    return id

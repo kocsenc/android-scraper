@@ -16,6 +16,7 @@ class AndroidApp():
     def __init__(self, name, location_root):
         self.name = name
         self.location = location_root
+        self.features = None  # This is where the result dict is stored
 
         # getting the source JAVA files
         self.code_source_location = os.path.join(location_root, "app/src")
