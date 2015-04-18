@@ -15,11 +15,9 @@ NOTE: This script is VERY specifically tied to the way data is modeled
 in the existing Database AppDataDB and the naming conventions of the apk's.
 """
 
-CONFIG_FILE = 'dbconfig.json'
 
-
-def write_app_data(app):
-    config = parse_config(CONFIG_FILE)
+def write_app_data(app, config_filename):
+    config = parse_config(config_filename)
 
     cnx = None
     try:
@@ -119,9 +117,11 @@ def get_version_id(app_package, version_code, raw_date, cnx):
 def parse_config(filename):
     try:
         # TODO: Validate configuration contents
-        config = json.load(filename)
+        with open(filename) as f:
+            config = json.load(f)
+
         return config
-    except:
-        print("Malformed or missing configuration file ", filename)
+    except Exception as e:
+        logging.error(e.message)
         exit(2)
 

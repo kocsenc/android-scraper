@@ -14,6 +14,7 @@ import logging
 from os.path import *
 from db.DBConnect import write_app_data
 
+CONFIG_FILE = "dbconfig.json"
 
 def main():
     """
@@ -76,7 +77,8 @@ def analyze_app(path):
     # Now add the features to the app object.
     current_app.features = features
 
-    write_app_data(current_app)
+    logging.info("Saving findings to database")
+    write_app_data(current_app, CONFIG_FILE)
 
 
 def setup_logging():
