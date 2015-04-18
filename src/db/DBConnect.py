@@ -79,7 +79,7 @@ def write(app, cnx):
         cursor.execute(add_feature_query, feature_data)
     except IntegrityError as e:
 
-        logging.warning("It seems we already analyzed this app." + e)
+        logging.warning("It seems we already analyzed this app." + str(e))
 
     # commit & actually save
     cnx.commit()
