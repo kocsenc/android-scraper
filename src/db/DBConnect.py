@@ -53,37 +53,32 @@ def write(app, cnx):
     :return:
     """
     cursor = cnx.cursor()
-    try:
-        results = app.features
-        table_name = 'features'
+    results = app.features
+    table_name = 'features'
 
-        split = app.name.split("-")
-        if len(split) != 3:
-            exit()
+    split = app.name.split("-")
+    if len(split) != 3:
+        exit()
 
-        foreign_key_id = get_version_id(split[0], split[1], split[2])
+    foreign_key_id = get_version_id(split[0], split[1], split[2])
 
-        add_feature_query = ("INSERT INTO version_features "
-                             "(app_version_id, internet, account_manager, uses_ssl, sharing_sending, translation) "
-                             "VALUES (%s, %s, %s, %s, %s, %s)")
+    add_feature_query = ("INSERT INTO version_features "
+                         "(app_version_id, internet, account_manager, uses_ssl, sharing_sending, translation) "
+                         "VALUES (%s, %s, %s, %s, %s, %s)")
 
-        feature_data = (
-            foreign_key_id,
-            results['Internet'],
-            results['Account Manager'],
-            results['Use SSL'],
-            results['Sharing-Sending'],
-            results['Internationalization']
-        )
+    feature_data = (
+        foreign_key_id,
+        results['Internet'],
+        results['Account Manager'],
+        results['Use SSL'],
+        results['Sharing-Sending'],
+        results['Internationalization']
+    )
 
-        cursor.execute(add_feature_query, feature_data)
+    cursor.execute(add_feature_query, feature_data)
 
-        # commit & actually save
-        cnx.commit()
-    except Exception as e:
-        raise e
-    finally:
-        cursor.close()
+    # commit & actually save
+    cnx.commit()
 
 
 def get_version_id(app_package, version_code, raw_date, cnx):
@@ -97,30 +92,28 @@ def get_version_id(app_package, version_code, raw_date, cnx):
     """
     cursor = cnx.cursor
     uid = None
-    try:
-        logging.debug("App package ", app_package)
-        logging.debug("version code ", version_code)
-        logging.debug("raw date ", raw_date)
+    logging.debug("App package ", app_package)
+    logging.debug("version code ", version_code)
+    logging.debug("raw date ", raw_date)
 
-        parsed_date = time.strftime("%b %d, %Y", time.strptime(raw_date, "%Y_%m_%d"))
+    parsed_date = time.strftime("%b %d, %Y", time.strptime(raw_date, "%Y_%m_%d"))
 
-        # Select id FROM version_details WHERE
-        # docid = app package,
-        # details_appDetails_versionCode = version_code
-        # details_appDetails_uploadDate = parsed_date // Maybe use %LIKE%
-        query = ("SELECT id FROM version_details WHERE "
-                 "docid = %s AND "
-                 "details_appDetails_versionCode = %s AND "
-                 "details_appDetails_uploadDate = %s")
+    # Select id FROM version_details WHERE
+    # docid = app package,
+    # details_appDetails_versionCode = version_code
+    # details_appDetails_uploadDate = parsed_date // Maybe use %LIKE%
+    query = ("SELECT id FROM version_details WHERE "
+             "docid = %s AND "
+             "details_appDetails_versionCode = %s AND "
+             "details_appDetails_uploadDate = %s")
 
-        cursor.execute(query, (app_package, version_code, parsed_date))
-        row = cursor.fetchone()
-        uid = row[0]
-        logging.debug("GOT ID!: ", str(uid))
+    cursor.execute(query, (app_package, version_code, parsed_date))
+    row = cursor.fetchone()
+    uid = row[0]
+    logging.debug("GOT ID!: ", str(uid))
 
-    finally:
-        cursor.close()
-        return uid
+    cursor.close()
+    return uid
 
 
 def parse_config(filename):
