@@ -36,8 +36,9 @@ def write_app_data(app, config_filename):
         elif err.errno == errorcode.ER_BAD_DB_ERROR:
             logging.error("Database does not exist")
         else:
-            logging.error(err)
+            logging.error(err.message)
     finally:
+        logging.debug("Conclude")
         # Close no matter what
         if cnx is not None:
             cnx.close()
