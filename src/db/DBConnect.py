@@ -21,7 +21,9 @@ def write_app_data(app, config_filename):
 
     cnx = None
     try:
+        # Establish a connection
         cnx = mysql.connector.connect(**config)
+        logging.debug("Connection established to DB")
         write(app, cnx)
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -30,9 +32,8 @@ def write_app_data(app, config_filename):
             logging.error("Database does not exist")
         else:
             logging.error(err)
-    except Exception as e:
-        logging.error(e.message)
     finally:
+        # Close no matter what
         if cnx is not None:
             cnx.close()
 
