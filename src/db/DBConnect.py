@@ -29,7 +29,6 @@ def write_app_data(app, config_filename):
     try:
         # Establish a connection
         cnx = mysql.connector.connect(**config)
-        logging.debug("Connection established to DB")
         write(app, cnx)
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -60,7 +59,8 @@ def write(app, cnx):
     if len(split) != 3:
         exit()
 
-    foreign_key_id = get_version_id(split[0], split[1], split[2])
+    logging.debug("getting foregin id")
+    foreign_key_id = get_version_id(split[0], split[1], split[2], cnx)
 
     add_feature_query = ("INSERT INTO version_features "
                          "(app_version_id, internet, account_manager, uses_ssl, sharing_sending, translation) "
