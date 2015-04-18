@@ -101,7 +101,7 @@ def get_version_id(app_package, version_code, raw_date, cnx):
 
         # Select id FROM version_details WHERE
         # docid = app package,
-        #   details_appDetails_versionCode = version_code
+        # details_appDetails_versionCode = version_code
         #   details_appDetails_uploadDate = parsed_date // Maybe use %LIKE%
         query = ("SELECT id FROM version_details WHERE "
                  "docid = %s AND "
