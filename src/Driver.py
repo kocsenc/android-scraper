@@ -12,7 +12,7 @@ __author__ = 'kocsen'
 import sys
 import logging
 from os.path import *
-from DBConnect import write_app_data
+from db.DBConnect import write_app_data
 
 
 def main():
