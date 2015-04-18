@@ -90,7 +90,7 @@ def get_version_id(app_package, version_code, raw_date, cnx):
     :param raw_date:     The date as appears on apk name in the format YYYY_MM_DD
     :return: id - as integer
     """
-    cursor = cnx.cursor
+    cursor = cnx.cursor()
     uid = None
     logging.debug("App package " + app_package)
     logging.debug("version code " + version_code)
