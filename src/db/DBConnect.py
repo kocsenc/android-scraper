@@ -2,6 +2,7 @@ __author__ = 'kocsen'
 
 import logging
 import time
+import json
 
 import mysql.connector
 from mysql.connector import errorcode
@@ -14,14 +15,11 @@ NOTE: This script is VERY specifically tied to the way data is modeled
 in the existing Database AppDataDB and the naming conventions of the apk's.
 """
 
+CONFIG_FILE = 'dbconfig.json'
+
 
 def write_app_data(app):
-    config = {
-        'user': 'AppDataDBUser',
-        'password': '7Rk5qx5k5AT7B0bNQD843pWNuADkKt4jQSnyAI8DNpjjgLlUamlGAgtMrzzK0Xu',
-        'host': '127.0.0.1',
-        'database': 'AppFeatures',
-    }
+    config = parse_config(CONFIG_FILE)
 
     cnx = None
     try:
@@ -118,4 +116,12 @@ def get_version_id(app_package, version_code, raw_date, cnx):
         return uid
 
 
+def parse_config(filename):
+    try:
+        # TODO: Validate configuration contents
+        config = json.load(filename)
+        return config
+    except:
+        print("Malformed or missing configuration file ", filename)
+        exit(2)
 
