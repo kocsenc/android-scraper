@@ -38,7 +38,6 @@ def write_app_data(app, config_filename):
         else:
             logging.error(err.message)
     finally:
-        logging.debug("Conclude")
         # Close no matter what
         if cnx is not None:
             cnx.close()

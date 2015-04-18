@@ -16,6 +16,7 @@ from db.DBConnect import write_app_data
 
 CONFIG_FILE = "dbconfig.json"
 
+
 def main():
     """
     Setup the logging, gather the path of the UNCOMPRESSED APK
@@ -30,7 +31,7 @@ def main():
         exit()
 
     # Carry on with app preconditions
-    path = arguments[1]
+    path = abspath(arguments[1])
     analyze_app(path)
 
 
