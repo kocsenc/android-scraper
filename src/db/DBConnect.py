@@ -92,9 +92,9 @@ def get_version_id(app_package, version_code, raw_date, cnx):
     """
     cursor = cnx.cursor
     uid = None
-    logging.debug("App package ", app_package)
-    logging.debug("version code ", version_code)
-    logging.debug("raw date ", raw_date)
+    logging.debug("App package " + app_package)
+    logging.debug("version code " + version_code)
+    logging.debug("raw date " + raw_date)
 
     parsed_date = time.strftime("%b %d, %Y", time.strptime(raw_date, "%Y_%m_%d"))
 
