@@ -6,6 +6,7 @@ import json
 
 import mysql.connector
 from mysql.connector import errorcode
+from mysql.connector.errors import IntegrityError
 
 
 """
@@ -36,7 +37,7 @@ def write_app_data(app, config_filename):
         elif err.errno == errorcode.ER_BAD_DB_ERROR:
             logging.error("Database does not exist")
         else:
-            logging.error(err.message)
+            logging.error(str(err))
     finally:
         # Close no matter what
         if cnx is not None:
@@ -74,8 +75,10 @@ def write(app, cnx):
         results['Sharing-Sending'],
         results['Internationalization']
     )
-
-    cursor.execute(add_feature_query, feature_data)
+    try:
+        cursor.execute(add_feature_query, feature_data)
+    except IntegrityError as e:
+        logging.error(e)
 
     # commit & actually save
     cnx.commit()
