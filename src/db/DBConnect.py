@@ -78,7 +78,8 @@ def write(app, cnx):
     try:
         cursor.execute(add_feature_query, feature_data)
     except IntegrityError as e:
-        logging.error(e)
+
+        logging.warning("It seems we already analyzed this app." + e)
 
     # commit & actually save
     cnx.commit()
@@ -113,7 +114,7 @@ def get_version_id(app_package, version_code, raw_date, cnx):
     cursor.execute(query, (app_package, version_code, parsed_date))
     row = cursor.fetchone()
     uid = row[0]
-    logging.debug("GOT ID!: " + str(uid))
+    logging.debug("Retrieved FKey ID: " + str(uid))
 
     cursor.close()
     return uid
