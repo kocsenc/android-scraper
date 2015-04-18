@@ -17,6 +17,12 @@ in the existing Database AppDataDB and the naming conventions of the apk's.
 
 
 def write_app_data(app, config_filename):
+    """
+
+    :param app:
+    :param config_filename:
+    :return:
+    """
     config = parse_config(config_filename)
 
     cnx = None
@@ -74,6 +80,8 @@ def write(app, cnx):
 
         # commit & actually save
         cnx.commit()
+    except Exception as e:
+        raise e
     finally:
         cursor.close()
 
