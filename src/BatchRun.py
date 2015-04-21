@@ -38,11 +38,12 @@ def batch(app_directory, file_with_apknames, decompiler_script):
     for original_apk_file in get_apk_paths_given_filename(app_directory, file_with_apknames):
         print("Decompiling and assessing " + os.path.basename(original_apk_file))
         apk_absolute_path = os.path.abspath(original_apk_file)
+        abs_uncompressed_path = ""
 
         try:
             # Step 1 : decompile
-            command = decompiler_script + " " + apk_absolute_path.strip()
-            subprocess.call([command])  # apkdecompiler.sh /apks/app.apk
+            command = decompiler_script + " " + apk_absolute_path
+            subprocess.call([decompiler_script, apk_absolute_path])  # apkdecompiler.sh /apks/app.apk
 
             # Step 2 : get uncompressed directory created above and call analysis
             abs_uncompressed_path = os.path.join(os.path.dirname(decompiler_script),
@@ -51,7 +52,6 @@ def batch(app_directory, file_with_apknames, decompiler_script):
             # TODO: Testing// analyze_app(abs_uncompressed_path)
         finally:
             # Hopefully the uncompressed app has been analyzed, now remove it
-
             if os.path.isdir(abs_uncompressed_path) and os.path.exists(abs_uncompressed_path):
                 logging.info("Deleting uncompressed directory")
                 shutil.rmtree(abs_uncompressed_path)
