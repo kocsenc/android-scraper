@@ -49,7 +49,7 @@ def batch(app_directory, file_with_apknames, decompiler_script):
             # Step 2 : get uncompressed directory created above and call analysis
             abs_uncompressed_path = os.path.join(os.path.dirname(decompiler_script),
                                                  os.path.basename(apk_absolute_path) + ".uncompressed")
-            print("Uncompressed Path: " + abs_uncompressed_path)
+            print("Uncompressed Path: " + apk_absolute_path)
             # TODO: Testing// analyze_app(abs_uncompressed_path)
         finally:
             # Hopefully the uncompressed app has been analyzed, now remove it
