@@ -25,8 +25,10 @@ def batch(app_directory, file_with_apknames, decompiler_script):
     app_directory = os.path.abspath(app_directory)
     decompiler_script = os.path.abspath(decompiler_script)
     file_with_apknames = os.path.abspath(file_with_apknames)
+
     print("APPS:    " + app_directory)
     print("DECOMPLR:" + decompiler_script)
+    print("APPNAMES:" + file_with_apknames)
 
     # for original_apk_file in os.listdir(app_directory):
     for original_apk_file in get_apk_paths_given_filename(app_directory, file_with_apknames):
