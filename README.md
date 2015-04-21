@@ -16,7 +16,7 @@ Or you can use it as a python module
 ```python
 import Driver
 
-analyze_app("/path/to/uncompressed apk)
+analyze_app("/path/to/uncompressedapk)
 ```
 
 ## Dependencies
