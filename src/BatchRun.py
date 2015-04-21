@@ -37,11 +37,9 @@ def batch(app_directory, file_with_apknames, decompiler_script):
     # for original_apk_file in os.listdir(app_directory):
     for original_apk_file in get_apk_paths_given_filename(app_directory, file_with_apknames):
         print("Decompiling and assessing " + os.path.basename(original_apk_file))
+        apk_absolute_path = os.path.abspath(original_apk_file)
 
         try:
-            # Should already be absolute, but just in case
-            apk_absolute_path = os.path.abspath(original_apk_file)
-
             # Step 1 : decompile
             command = decompiler_script + " " + apk_absolute_path
             subprocess.call([command])  # apkdecompiler.sh /apks/app.apk
