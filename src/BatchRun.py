@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import logging
 
 __author__ = 'kocsen'
@@ -5,8 +6,13 @@ __author__ = 'kocsen'
 import os
 import subprocess
 import shutil
+import sys
 
 from Driver import analyze_app
+
+
+def main():
+    batch(sys.argv[1], sys.argv[2])
 
 
 def batch(app_directory, decompiler_script):
@@ -42,4 +48,6 @@ def batch(app_directory, decompiler_script):
                     shutil.rmtree(abs_uncompressed_path)
 
 
+if __name__ == "__main__":
+    main()
 
