@@ -8,7 +8,9 @@ BSD 2-Clause [Simplified] license.
 You will need a path to the uncompressed directory using our [Android Decompiler](https://github.com/kocsenc/android-scraper/tree/master/tools/apk-decompiler/)
 
 So you may use it directly from command line
-`python Driver.py path/to/uncompressedapk`
+```
+python Driver.py path/to/uncompressedapk
+```
 
 Or you can use it as a python module
 ```python
