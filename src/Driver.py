@@ -22,8 +22,6 @@ def main():
     Setup the logging, gather the path of the UNCOMPRESSED APK
     Run static analysis tool.
     """
-    setup_logging()
-
     arguments = sys.argv
     if len(arguments) < 2:
         logging.error("Need more arguments")
@@ -42,6 +40,8 @@ def analyze_app(path):
     :param path:
     :return:
     """
+    setup_logging()
+
     app_name = basename(path).split(".apk.uncompressed")[0]
     logging.info("Starting Android Scraper")
     logging.info("App name: %s", app_name)
@@ -78,7 +78,7 @@ def analyze_app(path):
     # Now add the features to the app object.
     current_app.features = features
 
-    logging.info("Saving findings to database")
+    logging.info("Attempting to save findings to database...")
     write_app_data(current_app, CONFIG_FILE)
 
 
@@ -86,7 +86,7 @@ def setup_logging():
     """
     Logging setup
     """
-    logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)2s ', level=logging.DEBUG);
+    logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)2s ', level=logging.DEBUG)
     # logging.basicConfig(filename='android-scraper.log', level=logging.DEBUG)
 
 
