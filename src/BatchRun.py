@@ -8,6 +8,8 @@ import subprocess
 import shutil
 import sys
 
+from Driver import analyze_app
+
 
 def main():
     # USAGE:
@@ -49,7 +51,7 @@ def batch(app_directory, file_with_apknames, decompiler_script):
             abs_uncompressed_path = os.path.join(os.path.dirname(decompiler_script),
                                                  os.path.basename(apk_absolute_path) + ".uncompressed")
             print("Uncompressed Path: " + apk_absolute_path)
-            # TODO: Testing// analyze_app(abs_uncompressed_path)
+            analyze_app(abs_uncompressed_path)
         finally:
             # Hopefully the uncompressed app has been analyzed, now remove it
             if os.path.isdir(abs_uncompressed_path) and os.path.exists(abs_uncompressed_path):
