@@ -58,7 +58,7 @@ def get_apk_paths_given_filename(apps_path, filename):
     :param filename:  The filename that has the list of all the app names
     :return: a list of the absolute paths for the actual locations of the apk's
     """
-    with open(filename, 'w') as f:
+    with open(filename, 'r') as f:
         file_lines = f.readlines()
 
     return [os.path.join(apps_path, app_name) for app_name in file_lines]
