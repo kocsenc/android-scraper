@@ -41,7 +41,7 @@ def batch(app_directory, file_with_apknames, decompiler_script):
 
         try:
             # Step 1 : decompile
-            command = decompiler_script + " " + apk_absolute_path
+            command = decompiler_script + " " + apk_absolute_path.strip()
             subprocess.call([command])  # apkdecompiler.sh /apks/app.apk
 
             # Step 2 : get uncompressed directory created above and call analysis
