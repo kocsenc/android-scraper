@@ -100,7 +100,7 @@ def get_version_id(app_package, version_code, raw_date, cnx):
     logging.debug("Version code:\t" + version_code)
     logging.debug("Raw date:    \t" + raw_date)
 
-    parsed_date = time.strftime("%b %d, %Y", time.strptime(raw_date, "%Y_%m_%d"))
+    parsed_date = time.strftime("%b %-d, %Y", time.strptime(raw_date, "%Y_%m_%d"))
     logging.debug("Parsed date: \t" + parsed_date)
 
 
