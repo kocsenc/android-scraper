@@ -46,7 +46,8 @@ def batch(app_directory, file_with_apknames, decompiler_script):
         uncompressed_apk_name = apk_name + ".uncompressed"
         uncompressed_apk_absolute_path = os.path.join(os.path.dirname(decompiler_script),
                                                       uncompressed_apk_name)
-
+        if "8006100-2013_12_26.apk" in apk_name or "8006100-2014_01_02.apk" in apk_name:
+            continue
         try:
             # Step 1 : decompile
             logging.info("\tDecompiling...")
