@@ -20,7 +20,11 @@ class AndroidApp():
 
         # getting the source JAVA files
         self.code_source_location = os.path.join(location_root, "app/src")
-        self.manifest_ET_root = ET.parse(location_root + '/app/AndroidManifest.xml').getroot()
+
+        try:
+            self.manifest_ET_root = ET.parse(location_root + '/app/AndroidManifest.xml').getroot()
+        except FileNotFoundError:
+            raise AppEmptyException
 
         self.source_paths = []
         for root, subFolders, files in os.walk(self.code_source_location):
@@ -43,3 +47,7 @@ class AndroidApp():
                         self.lang_dirs.append(folder)
 
 
+class AppEmptyException(Exception):
+    def __init__(self, message):
+        # Call the base class constructor with the parameters it needs
+        super(Exception, self).__init__(message)

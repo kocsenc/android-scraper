@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 import logging
 
+from AndroidApp import AppEmptyException
+
+
 __author__ = 'kocsen'
 
 import os
@@ -12,7 +15,9 @@ from Driver import analyze_app
 
 
 def main():
-    logging.basicConfig(filename='out.log', level=logging.DEBUG)
+    logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)2s ', level=logging.DEBUG,
+                        filename='out.batch.log')
+
     # USAGE:
     # python BatchRun.py /path/to/apps/ path/to/filename_w_appnames.txt path/to/decompiler.sh
     if len(sys.argv) == 4:
@@ -34,13 +39,16 @@ def batch(app_directory, file_with_apknames, decompiler_script):
     decompiler_script = os.path.abspath(decompiler_script)
     file_with_apknames = os.path.abspath(file_with_apknames)
 
+    logging.info("* BATCH RUN CONFIG *")
     logging.info("APPS:    " + app_directory)
     logging.info("DECOMPLR:" + decompiler_script)
     logging.info("APPNAMES:" + file_with_apknames)
+    logging.info("********************")
 
-    # for original_apk_file in os.listdir(app_directory):
+    count = 1
     for original_apk_file in get_apk_paths_given_filename(app_directory, file_with_apknames):
-        logging.info("Decompiling and assessing " + os.path.basename(original_apk_file))
+        logging.info("*************** Starting #%d ***************", count)
+        logging.info("Assessing: \t%s", os.path.basename(original_apk_file))
         apk_absolute_path = os.path.abspath(original_apk_file)
         apk_name = os.path.basename(apk_absolute_path).rstrip()
         uncompressed_apk_name = apk_name + ".uncompressed"
@@ -57,18 +65,16 @@ def batch(app_directory, file_with_apknames, decompiler_script):
 
             # Step 2 : call analysis on uncompressed apk
             logging.info("Uncompressed Path: " + uncompressed_apk_absolute_path)
-            logging.info("\tAnalyzing...")
             analyze_app(uncompressed_apk_absolute_path)
-        except FileNotFoundError as e:
-            logging.debug("directory:\t" + str(uncompressed_apk_absolute_path))
-            logging.debug("ls dump\n" + str(os.listdir(uncompressed_apk_absolute_path)))
-            raise e
+        except AppEmptyException as e:
+            logging.error("It seems the app is empty, skipping.")
         finally:
             # Hopefully the uncompressed app has been analyzed, now remove it
             if os.path.isdir(uncompressed_apk_absolute_path) and os.path.exists(uncompressed_apk_absolute_path):
                 logging.info("Deleting uncompressed directory")
                 shutil.rmtree(uncompressed_apk_absolute_path)
-            logging.info("***** DONE *****")
+            logging.info("*************** DONE ***************\n\n")
+            count += 1
 
 
 def get_apk_paths_given_filename(apps_path, filename):

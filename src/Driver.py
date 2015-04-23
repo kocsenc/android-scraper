@@ -43,9 +43,8 @@ def analyze_app(path):
     setup_logging()
 
     app_name = basename(path).split(".apk.uncompressed")[0]
-    logging.info("Starting Android Scraper")
-    logging.info("App name: %s", app_name)
-    logging.info(abspath(path))
+    logging.info("Starting Feature Scraper")
+    logging.info("App name:\t%s", app_name)
 
     current_app = AndroidApp(app_name, abspath(path))
     internet_use = InternetUseCommand(current_app).execute()
@@ -78,7 +77,7 @@ def analyze_app(path):
     # Now add the features to the app object.
     current_app.features = features
 
-    logging.info("Attempting to save findings to database...")
+    logging.info("Saving findings to database...")
     write_app_data(current_app, CONFIG_FILE)
 
 
