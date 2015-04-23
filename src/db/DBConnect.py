@@ -116,7 +116,7 @@ def get_version_id(app_package, version_code, raw_date, cnx):
     cursor.execute(query, (app_package, version_code, parsed_date))
     row = cursor.fetchone()
     uid = row[0]
-    logging.debug("Retrieved FKey ID: " + str(uid))
+    logging.debug("Retrieved FKey ID:\t" + str(uid))
 
     cursor.close()
     return uid

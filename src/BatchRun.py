@@ -57,6 +57,9 @@ def batch(app_directory, file_with_apknames, decompiler_script):
             logging.info("Uncompressed Path: " + uncompressed_apk_absolute_path)
             logging.info("\tAnalyzing...")
             analyze_app(uncompressed_apk_absolute_path)
+        except FileNotFoundError as e:
+            logging.error("ls dump\n" + str(os.listdir(uncompressed_apk_absolute_path)))
+            raise e
         finally:
             # Hopefully the uncompressed app has been analyzed, now remove it
             if os.path.isdir(uncompressed_apk_absolute_path) and os.path.exists(uncompressed_apk_absolute_path):
