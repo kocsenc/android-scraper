@@ -49,11 +49,13 @@ def batch(app_directory, file_with_apknames, decompiler_script):
 
         try:
             # Step 1 : decompile
+            logging.info("\tDecompiling...")
             subprocess.call([decompiler_script, apk_absolute_path],
                             stdout=subprocess.DEVNULL)  # apkdecompiler.sh /apks/app.apk
 
             # Step 2 : call analysis on uncompressed apk
             logging.info("Uncompressed Path: " + uncompressed_apk_absolute_path)
+            logging.info("\tAnalyzing...")
             analyze_app(uncompressed_apk_absolute_path)
         finally:
             # Hopefully the uncompressed app has been analyzed, now remove it
