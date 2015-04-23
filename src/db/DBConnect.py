@@ -96,11 +96,13 @@ def get_version_id(app_package, version_code, raw_date, cnx):
     """
     cursor = cnx.cursor()
     uid = None
-    logging.debug("App package " + app_package)
-    logging.debug("version code " + version_code)
-    logging.debug("raw date " + raw_date)
+    logging.debug("App package: \t" + app_package)
+    logging.debug("Version code:\t" + version_code)
+    logging.debug("Raw date:    \t" + raw_date)
 
     parsed_date = time.strftime("%b %d, %Y", time.strptime(raw_date, "%Y_%m_%d"))
+    logging.debug("Parsed date: \t" + parsed_date)
+
 
     # Select id FROM version_details WHERE
     # docid = app package,
