@@ -42,7 +42,7 @@ def batch(app_directory, file_with_apknames, decompiler_script):
     for original_apk_file in get_apk_paths_given_filename(app_directory, file_with_apknames):
         logging.info("Decompiling and assessing " + os.path.basename(original_apk_file))
         apk_absolute_path = os.path.abspath(original_apk_file)
-        apk_name = os.path.basename(apk_absolute_path)
+        apk_name = os.path.basename(apk_absolute_path).rstrip()
         uncompressed_apk_name = apk_name + ".uncompressed"
         uncompressed_apk_absolute_path = os.path.join(os.path.dirname(decompiler_script),
                                                       uncompressed_apk_name)
