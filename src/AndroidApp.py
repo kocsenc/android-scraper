@@ -24,7 +24,7 @@ class AndroidApp():
         try:
             self.manifest_ET_root = ET.parse(location_root + '/app/AndroidManifest.xml').getroot()
         except FileNotFoundError:
-            raise AppEmptyException
+            raise AppEmptyException("No Manifest Found")
 
         self.source_paths = []
         for root, subFolders, files in os.walk(self.code_source_location):
