@@ -15,6 +15,16 @@ from Driver import analyze_app
 
 
 def main():
+    """
+    Sets up basic logging config.
+    Sets logging output to `out.batch.log`
+    Runs the batch system with the arguments.
+    ARGS:
+    - Path to where all the applications are located
+    - Path to the file which has the application names to run on
+        Note: This file has to have only the names, not the paths.
+    - Path to the decompiler script
+    """
     logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)2s ', level=logging.DEBUG,
                         filename='out.batch.log')
 
@@ -30,10 +40,12 @@ def main():
 
 def batch(app_directory, file_with_apknames, decompiler_script):
     """
+    Sets all ABSOLUTE paths to every parameter to avoid confusion.
+    Gathers the
 
-    :param app_directory:
-    :param decompiler_script:
-    :return:
+    :param app_directory:       The directory path where all apps are located
+    :param file_with_apknames:  The file path for list of apps to batch analyze
+    :param decompiler_script:   The path to the decompiler script
     """
     app_directory = os.path.abspath(app_directory)
     decompiler_script = os.path.abspath(decompiler_script)
@@ -45,18 +57,16 @@ def batch(app_directory, file_with_apknames, decompiler_script):
     logging.info("APPNAMES:" + file_with_apknames)
     logging.info("********************")
 
+    # Used to keep count of the app batch number.
     count = 1
     for original_apk_file in get_apk_paths_given_filename(app_directory, file_with_apknames):
         logging.info("*************** Starting #%d ***************", count)
-        logging.info("Assessing: \t%s", os.path.basename(original_apk_file))
+        logging.info("Assessing: \t%s", os.path.basename(original_apk_file).rstrip())
         apk_absolute_path = os.path.abspath(original_apk_file)
         apk_name = os.path.basename(apk_absolute_path).rstrip()
         uncompressed_apk_name = apk_name + ".uncompressed"
         uncompressed_apk_absolute_path = os.path.join(os.path.dirname(decompiler_script),
                                                       uncompressed_apk_name)
-        if "8006100-2013_12_26.apk" in apk_name or "8006100-2014_01_02.apk" in apk_name:
-            logging.debug("Skipping...")
-            continue
         try:
             # Step 1 : decompile
             logging.info("\tDecompiling...")
@@ -79,6 +89,9 @@ def batch(app_directory, file_with_apknames, decompiler_script):
 
 def get_apk_paths_given_filename(apps_path, filename):
     """
+    Reads the file filename and creates a list of absolute paths
+    for the actual absolute locations of the apk's.
+    
     :param apps_path: The path to where all the apks are located
     :param filename:  The filename that has the list of all the app names
     :return: a list of the absolute paths for the actual locations of the apk's
