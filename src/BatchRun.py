@@ -33,7 +33,7 @@ def main():
     if len(sys.argv) == 4:
         # TODO: Add argument parsing
         batch(sys.argv[1], sys.argv[2], sys.argv[3])
-    elif len(sys.argv) == 5:
+    elif len(sys.argv) == 5:  # the fifth argument is the argument used for how many items to ignore.
         ignore = int(sys.argv[4])
         batch(sys.argv[1], sys.argv[2], sys.argv[3], ignore=ignore)
     else:
