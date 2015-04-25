@@ -63,13 +63,14 @@ def batch(app_directory, file_with_apknames, decompiler_script, ignore=0):
 
     # Used to keep count of the app batch number.
     count = 1
+    ignored = ignore
     for original_apk_file in get_apk_paths_given_filename(app_directory, file_with_apknames):
         logging.info("*************** Starting #%d ***************", count)
         # Check if we were told to ignore it
-        if ignore > 0:
+        if ignored > 0:
             logging.warning("Skipping the app, %d skips to go", ignore)
             count += 1
-            ignore -= 0
+            ignored -= 1
             continue
 
         logging.info("Assessing: \t%s", os.path.basename(original_apk_file).rstrip())
