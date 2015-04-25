@@ -33,12 +33,15 @@ def main():
     if len(sys.argv) == 4:
         # TODO: Add argument parsing
         batch(sys.argv[1], sys.argv[2], sys.argv[3])
+    elif len(sys.argv) == 5:
+        ignore = int(sys.argv[4])
+        batch(sys.argv[1], sys.argv[2], sys.argv[3], ignore=ignore)
     else:
         logging.info(
             "USAGE:\n  python BatchRun.py /path/to/apps/ path/to/filename_w_appnames.txt path/to/decompiler.sh")
 
 
-def batch(app_directory, file_with_apknames, decompiler_script):
+def batch(app_directory, file_with_apknames, decompiler_script, ignore=0):
     """
     Sets all ABSOLUTE paths to every parameter to avoid confusion.
     Gathers the
@@ -46,6 +49,7 @@ def batch(app_directory, file_with_apknames, decompiler_script):
     :param app_directory:       The directory path where all apps are located
     :param file_with_apknames:  The file path for list of apps to batch analyze
     :param decompiler_script:   The path to the decompiler script
+    :param ignore (optional):   Number of apps to ignore, useful when resuming a batch
     """
     app_directory = os.path.abspath(app_directory)
     decompiler_script = os.path.abspath(decompiler_script)
@@ -61,6 +65,12 @@ def batch(app_directory, file_with_apknames, decompiler_script):
     count = 1
     for original_apk_file in get_apk_paths_given_filename(app_directory, file_with_apknames):
         logging.info("*************** Starting #%d ***************", count)
+        # Check if we were told to ignore it
+        if ignore > 0:
+            count += 1
+            ignore -= 0
+            continue
+
         logging.info("Assessing: \t%s", os.path.basename(original_apk_file).rstrip())
         apk_absolute_path = os.path.abspath(original_apk_file)
         apk_name = os.path.basename(apk_absolute_path).rstrip()
