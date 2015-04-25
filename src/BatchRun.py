@@ -68,7 +68,7 @@ def batch(app_directory, file_with_apknames, decompiler_script, ignore=0):
         logging.info("*************** Starting #%d ***************", count)
         # Check if we were told to ignore it
         if ignored > 0:
-            logging.warning("Skipping the app, %d skips to go", ignore)
+            logging.warning("Skipping the app, %d skips to go", ignored)
             count += 1
             ignored -= 1
             continue
