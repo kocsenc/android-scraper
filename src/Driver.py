@@ -30,10 +30,10 @@ def main():
 
     # Carry on with app preconditions
     path = abspath(arguments[1])
-    analyze_app(path)
+    analyze_app(path, save_to_db=False)
 
 
-def analyze_app(path):
+def analyze_app(path, save_to_db=False):
     """
     Actually analyzes the app, goes through the commands and saves results.
 
@@ -77,8 +77,9 @@ def analyze_app(path):
     # Now add the features to the app object.
     current_app.features = features
 
-    logging.info("Saving findings to database...")
-    write_app_data(current_app, CONFIG_FILE)
+    if (save_to_db):
+        logging.info("Saving findings to database...")
+        write_app_data(current_app, CONFIG_FILE)
 
 
 def setup_logging():

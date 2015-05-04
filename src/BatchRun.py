@@ -85,17 +85,21 @@ def batch(app_directory, file_with_apknames, decompiler_script, ignore=0):
             # Step 1 : decompile
             logging.info("\tDecompiling...")
             # apkdecompiler.sh /apks/app.apk
-            subprocess.call([decompiler_script, apk_absolute_path],
-                            stdout=subprocess.DEVNULL,
-                            timeout=decompiling_timeout)
+            subprocess.check_call([decompiler_script, apk_absolute_path],
+                                  stdout=subprocess.DEVNULL,
+                                  timeout=decompiling_timeout)
 
             # Step 2 : call analysis on uncompressed apk
             logging.info("Uncompressed Path: " + uncompressed_apk_absolute_path)
-            analyze_app(uncompressed_apk_absolute_path)
+            analyze_app(uncompressed_apk_absolute_path, save_to_db=True)
         except AppEmptyException as e:
             logging.error("It seems the app is empty, skipping.")
-        except subprocess.TimeoutExpired as e:
+        except subprocess.TimeoutExpired as t:
             logging.error("De-compilation process has taken over %d seconds. Skipping", decompiling_timeout)
+            logging.error(str(t))
+        except subprocess.CalledProcessError as err:  # Error in subprocess
+            logging.error("De-compilation process has returned an error code. Skipping")
+            logging.error(str(err))
         finally:
             # Hopefully the uncompressed app has been analyzed, now remove it
             if os.path.isdir(uncompressed_apk_absolute_path) and os.path.exists(uncompressed_apk_absolute_path):
