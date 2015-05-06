@@ -54,7 +54,7 @@ def batch(app_directory, file_with_apknames, decompiler_script, ignore=0):
     app_directory = os.path.abspath(app_directory)
     decompiler_script = os.path.abspath(decompiler_script)
     file_with_apknames = os.path.abspath(file_with_apknames)
-    decompiling_timeout = 3600  # seconds = 1 hour
+    decompiling_timeout = 3700  # seconds = 1 hour
 
     logging.info("* BATCH RUN CONFIG *")
     logging.info("APPS:    " + app_directory)
@@ -84,10 +84,14 @@ def batch(app_directory, file_with_apknames, decompiler_script, ignore=0):
         try:
             # Step 1 : decompile
             logging.info("\tDecompiling...")
-            # apkdecompiler.sh /apks/app.apk
-            subprocess.check_call([decompiler_script, apk_absolute_path],
-                                  stdout=subprocess.DEVNULL,
-                                  timeout=decompiling_timeout)
+            # timeout 1h apkdecompiler.sh /apks/app.apk
+            # // Linux 'timeout' command used because python's may not always kill the process
+            code = subprocess.call(["timeout", "1h", decompiler_script, apk_absolute_path],
+                                   stdout=subprocess.DEVNULL,
+                                   timeout=decompiling_timeout)
+
+            if code == 127:  # 127 returned by timeout command when timed out
+                raise subprocess.TimeoutExpired("timeout 1h decompile path", "1h")
 
             # Step 2 : call analysis on uncompressed apk
             logging.info("Uncompressed Path: " + uncompressed_apk_absolute_path)
@@ -97,9 +101,6 @@ def batch(app_directory, file_with_apknames, decompiler_script, ignore=0):
         except subprocess.TimeoutExpired as t:
             logging.error("De-compilation process has taken over %d seconds. Skipping", decompiling_timeout)
             logging.error(str(t))
-        except subprocess.CalledProcessError as err:  # Error in subprocess
-            logging.error("De-compilation process has returned an error code. Skipping")
-            logging.error(str(err))
         finally:
             # Hopefully the uncompressed app has been analyzed, now remove it
             if os.path.isdir(uncompressed_apk_absolute_path) and os.path.exists(uncompressed_apk_absolute_path):
