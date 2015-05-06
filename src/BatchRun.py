@@ -86,12 +86,9 @@ def batch(app_directory, file_with_apknames, decompiler_script, ignore=0):
             logging.info("\tDecompiling...")
             # timeout 1h apkdecompiler.sh /apks/app.apk
             # // Linux 'timeout' command used because python's may not always kill the process
-            code = subprocess.call(["timeout", "1h", decompiler_script, apk_absolute_path],
+            code = subprocess.call([decompiler_script, apk_absolute_path],
                                    stdout=subprocess.DEVNULL,
                                    timeout=decompiling_timeout)
-
-            if code == 127:  # 127 returned by timeout command when timed out
-                raise subprocess.TimeoutExpired("timeout 1h decompile path", "1h")
 
             # Step 2 : call analysis on uncompressed apk
             logging.info("Uncompressed Path: " + uncompressed_apk_absolute_path)

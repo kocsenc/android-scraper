@@ -56,8 +56,16 @@ unzip ${__apk_location} -d ${__working_location}/raw
 
 
 function get_readable_assets
-{ # Uses apk tool to get readable assets like the manifest file
-    java -jar ${__dir}/lib/apktool.jar d ${__apk_location} -f -o ${__working_location}/app
+{ # Uses apk tool to get readable assets like the manifest file. Timeout 1h
+    mac=Darwin
+    linux=Linux
+    if [ $(uname) == ${mac} ]
+    then
+        # No timeout command in mac, so just run decompiler
+        java -jar ${__dir}/lib/apktool.jar d ${__apk_location} -f -o ${__working_location}/app
+    else
+        timeout 1h java -jar ${__dir}/lib/apktool.jar d ${__apk_location} -f -o ${__working_location}/app
+    fi
 }
 
 function get_java_source_from_apk
