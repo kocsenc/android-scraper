@@ -56,25 +56,25 @@ unzip ${__apk_location} -d ${__working_location}/raw
 
 
 function get_readable_assets
-{ # Uses apk tool to get readable assets like the manifest file. Timeout 1h
-    mac=Darwin
-    linux=Linux
-    if [ $(uname) == ${mac} ]
-    then
-        # No timeout command in mac, so just run decompiler
-        java -jar ${__dir}/lib/apktool.jar d ${__apk_location} -f -o ${__working_location}/app
-    else
-        timeout 1h java -jar ${__dir}/lib/apktool.jar d ${__apk_location} -f -o ${__working_location}/app
-    fi
+{ # Uses apk tool to get readable assets like the manifest file.
+    java -jar ${__dir}/lib/apktool.jar d ${__apk_location} -f -o ${__working_location}/app
 }
 
 function get_java_source_from_apk
 { # Uses the apk file to get the .class files and then decompiles them
     # Run dex2jar outputting to raw/dex2jar.jar
     ${__dir}/lib/dex2jar/d2j-dex2jar.sh -o ${__working_location}/raw/dex2jar.jar --force ${__working_location}/raw/classes.dex
-    
-    # Run decompiler outputting to src/
-    java -jar ${__dir}/lib/procyon-decompiler.jar -jar ${__working_location}/raw/dex2jar.jar -o ${__working_location}/app/src
+
+    # Run decompiler outputting to src/  TIMEOUT 1Hour
+    mac=Darwin
+    linux=Linux
+    if [ $(uname) == ${mac} ]
+    then
+        # if on mac, cannot use timeout command. So just execute
+        java -jar ${__dir}/lib/procyon-decompiler.jar -jar ${__working_location}/raw/dex2jar.jar -o ${__working_location}/app/src
+    else
+        timeout 1h java -jar ${__dir}/lib/procyon-decompiler.jar -jar ${__working_location}/raw/dex2jar.jar -o ${__working_location}/app/src
+    fi
 }
 
 get_readable_assets
