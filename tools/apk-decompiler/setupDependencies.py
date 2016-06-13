@@ -11,7 +11,7 @@ import stat
 import os
 import sys
 
-if sys.version < '3':
+if sys.version < "3":
     sys.exit("Please use Python3.")
 import zipfile
 import urllib.request
@@ -23,7 +23,7 @@ lib_dir = __DIR + "/lib"
 # URLS for libraries
 dex2jar_url = "https://dex2jar.googlecode.com/files/dex2jar-0.0.9.15.zip"
 dex2jar_zip_destination = lib_dir + "/dex2jar.zip"
-apktools_url = "https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_2.0.0rc4.jar"
+apktools_url = "https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_2.1.1.jar"
 apktools_destination = lib_dir + "/apktool.jar"
 decompiler_url = "https://bitbucket.org/mstrobel/procyon/downloads/procyon-decompiler-0.5.28.jar"
 decompiler_destination = lib_dir + "/procyon-decompiler.jar"
